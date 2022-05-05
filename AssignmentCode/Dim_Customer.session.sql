@@ -51,7 +51,7 @@ INSERT INTO Dim_Customer
 )
 SELECT 
     Dim_Location.DimLocationID
-    ,Stage_Customer.CustomerID as CustomerID
+    ,Stage_Customer.CustomerID AS CustomerID
     ,CONCAT(Stage_Customer.FirstName,SPACE(1),Stage_Customer.LastName) AS CustomerFullName
     ,Stage_Customer.FirstName AS FirstName
     ,Stage_Customer.LastName AS LastName

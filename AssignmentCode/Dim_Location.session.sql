@@ -1,0 +1,79 @@
+--CREATE TABLE DIM_LOCATION
+USE SCHEMA PUBLIC
+CREATE OR REPLACE TABLE Dim_Location(
+    DimLocationID INT IDENTITY(1,1) CONSTRAINT PK_DimLocationID PRIMARY KEY NOT NULL --Surrogate Key
+    ,Address VARCHAR(255) NOT NULL
+    ,City VARCHAR(255) NOT NULL
+    ,PostalCode VARCHAR(255) NOT NULL
+    ,State_Province VARCHAR(255) NOT NULL
+    ,Country VARCHAR(50) NOT NULL
+);
+
+SELECT * FROM Dim_Location;
+--does the table look like you want it? If not, modify the code and 
+--re-create it or drop and re-create via the web interface.
+--DROP TABLE Dim_Location;
+
+--Load unknown members
+INSERT INTO Dim_Location
+(
+    DimLocationID
+    ,Address
+    ,City
+    ,PostalCode
+    ,State_Province
+    ,Country
+)
+VALUES
+( 
+    -1
+    ,'Unknown'
+    ,'Unknown'
+    ,'Unknown'
+    ,'Unknown'
+    ,'Unknown'
+);
+
+SELECT * FROM Dim_Location;
+
+--Load rows from reseller, customer, and store
+INSERT INTO Dim_Location
+(
+    Address
+    ,City
+    ,PostalCode
+    ,State_Province
+    ,Country
+)
+SELECT 
+    Address
+    ,City
+    ,PostalCode
+    ,StateProvince AS State_Province
+    ,Country
+     
+	FROM STAGE_RESELLER
+
+    UNION
+
+    SELECT 
+    Address
+    ,City
+    ,PostalCode
+    ,StateProvince AS State_Province
+    ,Country
+     
+	FROM STAGE_Customer
+
+    UNION
+
+    SELECT 
+    Address
+    ,City
+    ,PostalCode
+    ,StateProvince AS State_Province
+    ,Country
+
+    FROM STAGE_Store;
+
+SELECT * FROM Dim_Location;

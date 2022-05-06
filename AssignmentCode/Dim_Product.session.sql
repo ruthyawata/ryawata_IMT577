@@ -1,9 +1,9 @@
 --CREATE TABLE DIM_PRODUCT
 CREATE OR REPLACE TABLE Dim_Product(
     DimProductID INTEGER IDENTITY(1,1) CONSTRAINT PK_DimProductID PRIMARY KEY NOT NULL --Surrogate Key
-    ,ProductID INTEGER NOT NULL
-    ,ProductTypeID INTEGER NOT NULL
-    ,ProductCategoryID INTEGER NOT NULL
+    ,SourceProductID INTEGER NOT NULL
+    ,SourceProductTypeID INTEGER NOT NULL
+    ,SourceProductCategoryID INTEGER NOT NULL
     ,ProductName VARCHAR(255) NOT NULL
     ,ProductType VARCHAR(255) NOT NULL
     ,ProductCategory VARCHAR(255) NOT NULL
@@ -15,6 +15,8 @@ CREATE OR REPLACE TABLE Dim_Product(
     ,ProductProfitMarginUnitPercent FLOAT NOT NULL
 );
 
+SELECT * FROM Dim_Product;
+
 --does the table look like you want it? If not, modify the code and 
 --re-create it or drop and re-create via the web interface.
 --DROP TABLE Dim_Product;
@@ -23,9 +25,9 @@ CREATE OR REPLACE TABLE Dim_Product(
 INSERT INTO Dim_Product
 (
     DimProductID
-    ,ProductID
-    ,ProductTypeID
-    ,ProductCategoryID
+    ,SourceProductID
+    ,SourceProductTypeID
+    ,SourceProductCategoryID
     ,ProductName
     ,ProductType
     ,ProductCategory
@@ -58,9 +60,9 @@ SELECT * FROM Dim_Product;
 --Load rows from Stage_Product, product type, product category
 INSERT INTO Dim_Product
 (
-    ProductID
-    ,ProductTypeID
-    ,ProductCategoryID
+    SourceProductID
+    ,SourceProductTypeID
+    ,SourceProductCategoryID
     ,ProductName
     ,ProductType
     ,ProductCategory
@@ -68,35 +70,37 @@ INSERT INTO Dim_Product
     ,ProductWholesalePrice
     ,ProductCost
     ,ProductRetailProfit
+
     ,ProductWholesaleUnitProfit
     ,ProductProfitMarginUnitPercent
 )
 	SELECT 
-    ProductID
-    ,ProductTypeID
-    ,Stage_ProductType.ProductCategoryID AS ProductCategoryID
+    Stage_Product.ProductID AS SourceProductID
+    ,Stage_Product.ProductTypeID AS SourceProductTypeID
+    ,Stage_ProductType.ProductCategoryID AS SourceProductCategoryID
     ,Stage_Product.Product AS ProductName
     ,Stage_ProductType.ProductType AS ProductType
     ,Stage_ProductCategory.ProductCategory AS ProductCategory
     ,Stage_Product.Price AS ProductRetailPrice
     ,Stage_Product.WholesalePrice AS ProductWholesalePrice
     ,Stage_Product.Cost AS ProductCost
-    ,AS ProductRetailProfit
-    --Sales Profit (Quantity × Price) − (Quantity × Cost)
-    ,AS ProductWholesaleUnitProfit
-    ,AS ProductProfitMarginUnitPercent
-    --Profit Margin % of individual products (Price − Cost) ÷ (Price)
-     
+    ,SUM(Stage_Product.Price - Stage_Product.Cost) AS ProductRetailProfit
+    ,SUM(Stage_Product.WholesalePrice - Stage_Product.Cost) AS ProductWholesaleUnitProfit
+    ,ROUND(SUM((Stage_Product.Price - Stage_Product.Cost) / Stage_Product.Price), 2)  AS ProductProfitMarginUnitPercent
 	FROM Stage_Product
-    INNER JOIN Stage_ProductType ON
-    Stage_ProductType.ProductTypeID = Stage_Product.ProductTypeID
-    INNER JOIN Stage_ProductCategory
-    Stage_ProductType.ProductCategoryID = Stage_ProductCategory.ProductCategoryID;
+    INNER JOIN Stage_ProductType ON Stage_ProductType.ProductTypeID = Stage_Product.ProductTypeID
+    INNER JOIN Stage_ProductCategory ON Stage_ProductCategory.ProductCategoryID = Stage_ProductType.ProductCategoryID;
 
 SELECT * FROM Dim_Product;
 
-SELECT 
-    Stage_ProductType.ProductCategoryID AS ProductCategoryID
+--test query with error
+--SQL compilation error: [STAGE_PRODUCT.PRODUCTID] is not a valid group by expression
+SELECT
+    ProductID AS SourceProductID
+    ,Stage_Product.ProductTypeID AS SourceProductTypeID
+    ,Stage_Product.Product AS ProductName
+    ,Stage_Product.Price AS ProductRetailPrice
+    ,Stage_Product.WholesalePrice AS ProductWholesalePrice
+    ,Stage_Product.Cost AS ProductCost
+    ,SUM(Stage_Product.Price - Stage_Product.Cost) AS ProductRetailProfit
     FROM Stage_Product
-    INNER JOIN Stage_ProductType ON
-    Stage_ProductType.ProductTypeID = Stage_Product.ProductTypeID;

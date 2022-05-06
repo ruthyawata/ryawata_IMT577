@@ -1,8 +1,8 @@
 --CREATE TABLE DIM_CHANNEL
 CREATE OR REPLACE TABLE Dim_Channel(
     DimChannelID INTEGER IDENTITY(1,1) CONSTRAINT PK_DimChannelID PRIMARY KEY NOT NULL --Surrogate Key
-    ,ChannelID INTEGER NOT NULL
-    ,ChannelCategoryID INTEGER NOT NULL
+    ,SourceChannelID INTEGER NOT NULL
+    ,SourceChannelCategoryID INTEGER NOT NULL
     ,ChannelName VARCHAR(255) NOT NULL
     ,ChannelCategory VARCHAR(255) NOT NULL
 );
@@ -17,8 +17,8 @@ SELECT * FROM Dim_Channel;
 INSERT INTO Dim_Channel
 (
     DimChannelID
-    ,ChannelID
-    ,ChannelCategoryID
+    ,SourceChannelID
+    ,SourceChannelCategoryID
     ,ChannelName
     ,ChannelCategory
 )
@@ -36,20 +36,18 @@ SELECT * FROM Dim_Channel;
 --Load rows from Stage_Channel
 INSERT INTO Dim_Channel
 (
-    DimChannelID
-    ,ChannelID
-    ,ChannelCategoryID
+    SourceChannelID
+    ,SourceChannelCategoryID
     ,ChannelName
     ,ChannelCategory
 )
 SELECT 
-    Stage_Channel.ChannelID AS ChannelID
-    ,Stage_ChannelCategory.ChannelCategoryID AS ChannelCategoryID
-    ,Stage_Channel.FirstName AS FirstName
-    ,Stage_Channel.LastName AS LastName
-    ,Stage_Channel.Gender AS CustomerGender
+    Stage_Channel.ChannelID AS SourceChannelID
+    ,Stage_Channel.ChannelCategoryID AS SourceChannelCategoryID
+    ,Stage_Channel.Channel AS ChannelName
+    ,Stage_ChannelCategory.ChannelCategory AS ChannelCategory
 FROM Stage_Channel
 INNER JOIN Stage_ChannelCategory ON
-Stage_ChannelCategory = Stage_Channel.Address;
+Stage_ChannelCategory.ChannelCategoryID = Stage_Channel.ChannelCategoryID
 
 SELECT * FROM Dim_Channel;

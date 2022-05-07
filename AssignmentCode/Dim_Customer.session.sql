@@ -2,7 +2,7 @@
 CREATE OR REPLACE TABLE Dim_Customer(
     DimCustomerID INTEGER IDENTITY(1,1) CONSTRAINT PK_DimCustomerID PRIMARY KEY NOT NULL --Surrogate Key
     ,DimLocationID INTEGER CONSTRAINT FK_DimLocationIDCustomer FOREIGN KEY REFERENCES Dim_Location (DimLocationID) NOT NULL --Foreign Key
-    ,CustomerID VARCHAR(255) NOT NULL
+    ,SourceCustomerID VARCHAR(255) NOT NULL
     ,CustomerFullName VARCHAR(255) NOT NULL
     ,CustomerFirstName VARCHAR(255) NOT NULL
     ,CustomerLastName VARCHAR(255) NOT NULL
@@ -20,7 +20,7 @@ INSERT INTO Dim_Customer
 (
     DimCustomerID
     ,DimLocationID
-    ,CustomerID
+    ,SourceCustomerID
     ,CustomerFullName
     ,CustomerFirstName
     ,CustomerLastName
@@ -43,7 +43,7 @@ SELECT * FROM Dim_Customer;
 INSERT INTO Dim_Customer
 (
     DimLocationID
-    ,CustomerID
+    ,SourceCustomerID
     ,CustomerFullName
     ,CustomerFirstName
     ,CustomerLastName

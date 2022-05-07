@@ -2,7 +2,7 @@
 CREATE OR REPLACE TABLE Dim_Reseller(
     DimResellerID INTEGER IDENTITY(1,1) CONSTRAINT PK_DimResellerID PRIMARY KEY NOT NULL --Surrogate Key
     ,DimLocationID INTEGER CONSTRAINT FK_DimLocationIDCustomer FOREIGN KEY REFERENCES Dim_Location (DimLocationID) NOT NULL --Foreign Key
-    ,ResellerID VARCHAR(255) NOT NULL
+    ,SourceResellerID VARCHAR(255) NOT NULL
     ,ResellerName VARCHAR(255) NOT NULL
     ,ContactName VARCHAR(255) NOT NULL
     ,PhoneNumber String NOT NULL
@@ -20,7 +20,7 @@ INSERT INTO Dim_Reseller
 (
     DimResellerID
     ,DimLocationID
-    ,ResellerID
+    ,SourceResellerID
     ,ResellerName
     ,ContactName
     ,PhoneNumber
@@ -43,7 +43,7 @@ SELECT * FROM Dim_Reseller;
 INSERT INTO Dim_Reseller
 (
     DimLocationID
-    ,ResellerID
+    ,SourceResellerID
     ,ResellerName
     ,ContactName
     ,PhoneNumber
@@ -51,7 +51,7 @@ INSERT INTO Dim_Reseller
 )
 SELECT 
     Dim_Location.DimLocationID
-    ,Stage_Reseller.ResellerID AS ResellerID
+    ,Stage_Reseller.ResellerID AS SourceResellerID
     ,Stage_Reseller.ResellerName AS ResellerName
     ,Stage_Reseller.Contact AS ContactName
     ,Stage_Reseller.PhoneNumber AS PhoneNumber

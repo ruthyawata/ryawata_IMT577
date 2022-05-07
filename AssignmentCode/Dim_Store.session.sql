@@ -3,7 +3,6 @@ CREATE OR REPLACE TABLE Dim_Store(
     DimStoreID INTEGER IDENTITY(1,1) CONSTRAINT PK_DimStoreID PRIMARY KEY NOT NULL --Surrogate Key
     ,DimLocationID INTEGER CONSTRAINT FK_DimLocationIDCustomer FOREIGN KEY REFERENCES Dim_Location (DimLocationID) NOT NULL --Foreign Key
     ,SourceStoreID INTEGER NOT NULL
-    ,StoreName VARCHAR(255) NOT NULL
     ,StoreNumber INTEGER NOT NULL
     ,StoreManager VARCHAR(255) NOT NULL
 );
@@ -20,7 +19,6 @@ INSERT INTO Dim_Store
     DimStoreID
     ,DimLocationID
     ,SourceStoreID
-    ,StoreName
     ,StoreNumber
     ,StoreManager
 )
@@ -29,7 +27,6 @@ VALUES
      -1
     ,-1
     ,-1
-    ,'Unknown'
     ,-1
     ,'Unknown'
 );
@@ -41,14 +38,12 @@ INSERT INTO Dim_Store
 (
     DimLocationID
     ,SourceStoreID
-    ,StoreName
     ,StoreNumber
     ,StoreManager
 )
 SELECT 
     Dim_Location.DimLocationID
     ,Stage_Store.StoreID AS SourceStoreID
-    ,CONCAT('Store Number ', Stage_Store.StoreNumber) AS StoreName
     ,Stage_Store.StoreNumber AS StoreNumber
     ,Stage_Store.StoreManager AS StoreManager
 FROM Stage_Store

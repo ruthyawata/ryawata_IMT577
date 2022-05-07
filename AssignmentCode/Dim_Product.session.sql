@@ -70,7 +70,6 @@ INSERT INTO Dim_Product
     ,ProductWholesalePrice
     ,ProductCost
     ,ProductRetailProfit
-
     ,ProductWholesaleUnitProfit
     ,ProductProfitMarginUnitPercent
 )
@@ -89,18 +88,7 @@ INSERT INTO Dim_Product
     ,ROUND(SUM((Stage_Product.Price - Stage_Product.Cost) / Stage_Product.Price), 2)  AS ProductProfitMarginUnitPercent
 	FROM Stage_Product
     INNER JOIN Stage_ProductType ON Stage_ProductType.ProductTypeID = Stage_Product.ProductTypeID
-    INNER JOIN Stage_ProductCategory ON Stage_ProductCategory.ProductCategoryID = Stage_ProductType.ProductCategoryID;
+    INNER JOIN Stage_ProductCategory ON Stage_ProductCategory.ProductCategoryID = Stage_ProductType.ProductCategoryID
+    GROUP BY Stage_Product.ProductID, Stage_Product.ProductTypeID, Stage_ProductType.ProductCategoryID, ProductName, ProductType, ProductCategory, ProductRetailPrice, ProductWholesalePrice, ProductCost;
 
 SELECT * FROM Dim_Product;
-
---test query with error
---SQL compilation error: [STAGE_PRODUCT.PRODUCTID] is not a valid group by expression
-SELECT
-    ProductID AS SourceProductID
-    ,Stage_Product.ProductTypeID AS SourceProductTypeID
-    ,Stage_Product.Product AS ProductName
-    ,Stage_Product.Price AS ProductRetailPrice
-    ,Stage_Product.WholesalePrice AS ProductWholesalePrice
-    ,Stage_Product.Cost AS ProductCost
-    ,SUM(Stage_Product.Price - Stage_Product.Cost) AS ProductRetailProfit
-    FROM Stage_Product

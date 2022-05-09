@@ -7,6 +7,8 @@ CREATE OR REPLACE TABLE Dim_Customer(
     ,CustomerFirstName VARCHAR(255) NOT NULL
     ,CustomerLastName VARCHAR(255) NOT NULL
     ,CustomerGender VARCHAR(255) NOT NULL
+    ,EmailAddress VARCHAR(255) NOT NULL
+    ,PhoneNumber STRING NOT NULL
 );
 
 SELECT * FROM Dim_Customer;
@@ -25,12 +27,16 @@ INSERT INTO Dim_Customer
     ,CustomerFirstName
     ,CustomerLastName
     ,CustomerGender
+    ,EmailAddress
+    ,PhoneNumber
 )
 VALUES
 ( 
      -1
     ,-1
     ,'Unknown' 
+    ,'Unknown'
+    ,'Unknown'
     ,'Unknown'
     ,'Unknown'
     ,'Unknown'
@@ -48,6 +54,8 @@ INSERT INTO Dim_Customer
     ,CustomerFirstName
     ,CustomerLastName
     ,CustomerGender
+    ,EmailAddress
+    ,PhoneNumber
 )
 SELECT 
     Dim_Location.DimLocationID
@@ -56,6 +64,8 @@ SELECT
     ,Stage_Customer.FirstName AS FirstName
     ,Stage_Customer.LastName AS LastName
     ,Stage_Customer.Gender AS CustomerGender
+    ,Stage_Customer.EmailAddress AS EmailAddress
+    ,Stage_Customer.PhoneNumber AS PhoneNumber
 FROM Stage_Customer
 INNER JOIN Dim_Location ON
 Dim_Location.Address = Stage_Customer.Address;

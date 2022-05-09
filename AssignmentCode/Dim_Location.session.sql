@@ -4,7 +4,7 @@ CREATE OR REPLACE TABLE Dim_Location(
     ,Address VARCHAR(255) NOT NULL
     ,City VARCHAR(255) NOT NULL
     ,PostalCode VARCHAR(255) NOT NULL
-    ,State_Province VARCHAR(255) NOT NULL
+    ,Region VARCHAR(255) NOT NULL
     ,Country VARCHAR(50) NOT NULL
 );
 
@@ -20,7 +20,7 @@ INSERT INTO Dim_Location
     ,Address
     ,City
     ,PostalCode
-    ,State_Province
+    ,Region
     ,Country
 )
 VALUES
@@ -41,14 +41,14 @@ INSERT INTO Dim_Location
     Address
     ,City
     ,PostalCode
-    ,State_Province
+    ,Region
     ,Country
 )
 SELECT 
     Address
     ,City
     ,PostalCode
-    ,StateProvince AS State_Province
+    ,StateProvince AS Region
     ,Country
      
 	FROM STAGE_RESELLER
@@ -59,7 +59,7 @@ SELECT
     Address
     ,City
     ,PostalCode
-    ,StateProvince AS State_Province
+    ,StateProvince AS Region
     ,Country
      
 	FROM STAGE_Customer
@@ -70,7 +70,7 @@ SELECT
     Address
     ,City
     ,PostalCode
-    ,StateProvince AS State_Province
+    ,StateProvince AS Region
     ,Country
 
     FROM STAGE_Store;

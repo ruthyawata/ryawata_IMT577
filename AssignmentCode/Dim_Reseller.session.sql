@@ -5,7 +5,7 @@ CREATE OR REPLACE TABLE Dim_Reseller(
     ,SourceResellerID VARCHAR(255) NOT NULL
     ,ResellerName VARCHAR(255) NOT NULL
     ,ContactName VARCHAR(255) NOT NULL
-    ,PhoneNumber String NOT NULL
+    ,PhoneNumber STRING NOT NULL
     ,Email VARCHAR(255) NOT NULL
 );
 

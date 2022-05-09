@@ -159,8 +159,8 @@ CREATE OR REPLACE TABLE Dim_Species(
     ,HairColors VARCHAR(50) NOT NULL
     ,EyeColors VARCHAR(255) NOT NULL
     ,Language VARCHAR(255) NOT NULL
+    ,Homeworld VARCHAR(255) NOT NULL
 );
-alter table Dim_Characters rename column charactersid to CharacterID
 --does the table look like you want it? If not, modify the code and 
 --re-create it or drop and re-create via the web interface.
 DROP TABLE Dim_Species
@@ -177,12 +177,14 @@ INSERT INTO Dim_Species
     ,HairColors
     ,EyeColors
     ,Language
+    ,Homeworld
 )
 VALUES
 ( 
      -1
     ,-1
     ,'Unknown' 
+    ,'Unknown'
     ,'Unknown'
     ,'Unknown'
     ,'Unknown'
@@ -196,7 +198,7 @@ SELECT * FROM Dim_Species;
 INSERT INTO Dim_Species
 (
      DimSpeciesID
-	,SpeciesIDs
+	,SpeciesID
     ,Species
     ,Classification
     ,Designation
@@ -204,6 +206,7 @@ INSERT INTO Dim_Species
     ,HairColors
     ,EyeColors
     ,Language
+    ,Homeworld
 )
 	SELECT 
 	  SpeciesID AS DimSpeciesID
@@ -215,6 +218,7 @@ INSERT INTO Dim_Species
     ,HairColors
     ,EyeColors
     ,Language
+    ,Homeworld
      
 	FROM STAGE_STARWARSSPECIES
 

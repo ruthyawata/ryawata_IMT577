@@ -1,7 +1,7 @@
 --CREATE TABLE FACT_PRODUCTSALESTARGET
 CREATE OR REPLACE TABLE Fact_ProductSalesTarget(
     DimProductID INT CONSTRAINT FK_DimProductID FOREIGN KEY REFERENCES Dim_Product(DimProductID) --Foreign Key
-    ,DimTargetDateID INT CONSTRAINT FK_DimTargetDateID FOREIGN KEY REFERENCES Dim_Date(DatePkey) --Foreign Key
+    ,DimTargetDateID INT CONSTRAINT FK_DimTargetDateID FOREIGN KEY REFERENCES Dim_Date(Date_Pkey) --Foreign Key
     ,ProductTargetSalesQuantity FLOAT NOT NULL
 );
 
@@ -18,14 +18,14 @@ INSERT INTO Fact_ProductSalesTarget
     ,DimTargetDateID
     ,ProductProfitMarginUnitPercent
 )
-	SELECT DISTINCT   
+	SELECT DISTINCT
         Dim_Product.DimProductID AS DimProductID
         ,Dim_Date.Date_Pkey AS DimTargetDateID
-        ,Dim_Product.ProductProfitMarginUnitPercent AS ProductProfitMarginUnitPercent
-	FROM Dim_Product
-	INNER JOIN Dim_Product ON
-    -- figure out how to link stage_product with the created date
-	Dim_Characters.Species = Stage_StarwarsSpecies.Name
-	INNER JOIN Dim_Species ON Dim_Species.SpeciesID = Stage_StarwarsSpecies.SpeciesID
-
-SELECT * FROM Dim_Product;
+        ,Stage_TargetDataProduct.SalesQuantityTarget AS ProductTargetSalesQuantity
+	FROM Stage_TargetDataProduct
+    INNER JOIN Dim_Product ON
+    Stage_TargetDataProduct.ProductID = Dim_Product.SourceProductID
+    LEFT JOIN Dim_Date ON
+    Stage_TargetDataProduct.Year = Dim_Date.Year
+-- has 17,520 results
+SELECT * FROM Fact_ProductSalesTarget;

@@ -1,12 +1,9 @@
 --CREATE TABLE FACT_PRODUCTSALESTARGET
 CREATE OR REPLACE TABLE Fact_SRCSalesTarget(
-    DimProductID INT CONSTRAINT FK_DimProductID FOREIGN KEY REFERENCES Dim_Product(DimProductID) --Foreign Key
-    ,DimStoreID INT CONSTRAINT FK_DimStoreID FOREIGN KEY REFERENCES Dim_Store(DimStoreID) --Foreign Key
+    DimStoreID INT CONSTRAINT FK_DimStoreID FOREIGN KEY REFERENCES Dim_Store(DimStoreID) --Foreign Key
     ,DimResellerID INT CONSTRAINT FK_DimResellerID FOREIGN KEY REFERENCES Dim_Reseller(DimResellerID) --Foreign Key
-    ,DimCustomerID INT CONSTRAINT FK_DimCustomerID FOREIGN KEY REFERENCES Dim_Customer(DimCustomerID) --Foreign Key
     ,DimChannelID INT CONSTRAINT FK_DimChannelID FOREIGN KEY REFERENCES Dim_Channel(DimChannelID) --Foreign Key
-    ,DimSaleDateID INT CONSTRAINT FK_DimTargetDateID FOREIGN KEY REFERENCES Dim_Date(Date_Pkey) --Foreign Key
-    ,DimLocationID INT CONSTRAINT FK_DimLocationID FOREIGN KEY REFERENCES Dim_Location(DimLocationID) --Foreign Key
+    ,DimTargetDateID INT CONSTRAINT FK_DimTargetDateID FOREIGN KEY REFERENCES Dim_Date(Date_Pkey) --Foreign Key
     ,SalesTargetAmount FLOAT NOT NULL
 );
 
@@ -16,30 +13,42 @@ SELECT * FROM Fact_SRCSalesTarget;
 --re-create it or drop and re-create via the web interface.
 --DROP TABLE Fact_ProductSalesTarget;
 
---Load rows from Dim_Product, Dim_Date
+--Load rows from Dim_Store, Dim_Reseller, Dim_Channel, Dim_Date
 INSERT INTO Fact_SRCSalesTarget
 (
-    DimProductID
-    ,DimStoreID
-    ,DimResellerID
-    ,DimCustomerID 
-    ,DimChannelID
-    ,DimSaleDateID
-    ,DimLocationID
+    NVL(Dim_Store.DimStoreID, -1) AS DimStoreID
+    ,NVL(Dim_Reseller.DimResellerID, -1) AS DimResellerID
+    ,NVL(Dim_Channel.DimChannelID, -1) AS DimChannelID
+    ,DimTargetDateID
     ,SalesTargetAmount
 )
 	SELECT DISTINCT
-        Dim_Product.DimProductID AS DimProductID
-        ,Dim_Store.DimStoreID AS DimStoreID
+        Dim_Store.DimStoreID AS DimStoreID
         ,Dim_Reseller.DimResellerID AS DimResellerID
-        ,Dim_Customer_DimCustomerID AS DimCustomerID 
         ,Dim_Channel.DimChannelID AS DimChannelID
-        ,Dim_Date.Date_Pkey AS DimSaleDateID
-        ,Dim_Location.DimLocationID AS DimLocationID
+        ,Dim_Date.Date_Pkey AS DimTargetDateID
         ,Stage_TargetDataChannel.TargetSalesAmount AS SalesTargetAmount
 	FROM Stage_TargetDataChannel
     INNER JOIN Dim_Channel ON
-    Dim_Channel.ChannelName = Stage_TargetDataChannel.ChannelName
-    INNER JOIN 
+    Dim_Channel.ChannelName = 
+    CASE 
+        WHEN Stage_TargetDataChannel.ChannelName = 'Online' THEN 'On-line' ELSE Stage_TargetDataChannel.ChannelName 
+    END
+    INNER JOIN Dim_Reseller ON
+    Dim_Reseller.ResellerName = Stage_TargetDataChannel.TargetName
+    INNER JOIN Dim_Store ON
+    Dim_Store.StoreNumber = 
+    CASE
+        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 5' then 5
+        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 8' then 8
+        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 10' then 10
+        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 21' then 21
+        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 34' then 34
+        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 39' then 39
+    END
+    LEFT JOIN Dim_Date ON
+    Dim_Date.Year = Stage_TargetDataChannel.Year
 
 SELECT * FROM Fact_SRCSalesTarget;
+
+--seperate out the query to see what area is problamatic

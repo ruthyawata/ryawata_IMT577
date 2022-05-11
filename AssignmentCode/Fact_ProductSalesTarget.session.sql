@@ -24,8 +24,8 @@ INSERT INTO Fact_ProductSalesTarget
         ,Stage_TargetDataProduct.SalesQuantityTarget AS ProductTargetSalesQuantity
 	FROM Stage_TargetDataProduct
     INNER JOIN Dim_Product ON
-    Stage_TargetDataProduct.ProductID = Dim_Product.SourceProductID
+    Dim_Product.SourceProductID = Stage_TargetDataProduct.ProductID
     LEFT JOIN Dim_Date ON
-    Stage_TargetDataProduct.Year = Dim_Date.Year
--- has 17,520 results
+    Dim_Date.Year = Stage_TargetDataProduct.Year
+    --17520 results?
 SELECT * FROM Fact_ProductSalesTarget;

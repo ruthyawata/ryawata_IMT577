@@ -1,7 +1,7 @@
 --CREATE TABLE FACT_PRODUCTSALESTARGET
 CREATE OR REPLACE TABLE Fact_ProductSalesTarget(
-    DimProductID INT CONSTRAINT FK_DimProductID FOREIGN KEY REFERENCES Dim_Product(DimProductID) --Foreign Key
-    ,DimTargetDateID INT CONSTRAINT FK_DimTargetDateID FOREIGN KEY REFERENCES Dim_Date(Date_Pkey) --Foreign Key
+    DimProductID INTEGER CONSTRAINT FK_DimProductID FOREIGN KEY REFERENCES Dim_Product(DimProductID) --Foreign Key
+    ,DimTargetDateID NUMBER(9) CONSTRAINT FK_DimTargetDateID FOREIGN KEY REFERENCES Dim_Date(Date_Pkey) --Foreign Key
     ,ProductTargetSalesQuantity FLOAT NOT NULL
 );
 
@@ -16,10 +16,10 @@ INSERT INTO Fact_ProductSalesTarget
 (
     DimProductID
     ,DimTargetDateID
-    ,ProductProfitMarginUnitPercent
+    ,ProductTargetSalesQuantity
 )
 	SELECT DISTINCT
-        Dim_Product.DimProductID AS DimProductID
+        NVL(Dim_Product.DimProductID, -1) AS DimProductID
         ,Dim_Date.Date_Pkey AS DimTargetDateID
         ,Stage_TargetDataProduct.SalesQuantityTarget AS ProductTargetSalesQuantity
 	FROM Stage_TargetDataProduct
@@ -27,5 +27,6 @@ INSERT INTO Fact_ProductSalesTarget
     Dim_Product.SourceProductID = Stage_TargetDataProduct.ProductID
     LEFT JOIN Dim_Date ON
     Dim_Date.Year = Stage_TargetDataProduct.Year
-    --17520 results?
+
 SELECT * FROM Fact_ProductSalesTarget;
+--17520 results

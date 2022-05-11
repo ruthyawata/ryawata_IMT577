@@ -5,7 +5,7 @@ CREATE OR REPLACE TABLE Fact_SalesActual(
     ,DimResellerID INTEGER CONSTRAINT FK_DimResellerID FOREIGN KEY REFERENCES Dim_Reseller(DimResellerID) --Foreign Key
     ,DimCustomerID INTEGER CONSTRAINT FK_DimCustomerID FOREIGN KEY REFERENCES Dim_Customer(DimCustomerID) --Foreign Key
     ,DimChannelID INTEGER CONSTRAINT FK_DimChannelID FOREIGN KEY REFERENCES Dim_Channel(DimChannelID) --Foreign Key
-    ,DimSaleDateID INTEGER CONSTRAINT FK_DimTargetDateID FOREIGN KEY REFERENCES Dim_Date(Date_Pkey) --Foreign Key
+    ,DimSaleDateID NUMBER(9) CONSTRAINT FK_DimTargetDateID FOREIGN KEY REFERENCES Dim_Date(Date_Pkey) --Foreign Key
     ,DimLocationID INTEGER CONSTRAINT FK_DimLocationID FOREIGN KEY REFERENCES Dim_Location(DimLocationID) --Foreign Key
     ,SourceSalesHeaderID INTEGER NOT NULL
     ,SourceSalesDetailID INTEGER NOT NULL
@@ -41,13 +41,13 @@ INSERT INTO Fact_SalesActual
     ,SaleTotalProfit
 )
 	SELECT DISTINCT
-        Dim_Product.DimProductID AS DimProductID
-        ,Dim_Store.DimStoreID AS DimStoreID
-        ,Dim_Reseller.DimResellerID AS DimResellerID
-        ,Dim_Customer.DimCustomerID AS DimCustomerID 
-        ,Dim_Channel.DimChannelID AS DimChannelID
+        NVL(Dim_Product.DimProductID, -1) AS DimProductID
+        ,NVL(Dim_Store.DimStoreID, -1) AS DimStoreID
+        ,NVL(Dim_Reseller.DimResellerID, -1) AS DimResellerID
+        ,NVL(Dim_Customer.DimCustomerID, -1) AS DimCustomerID 
+        ,NVL(Dim_Channel.DimChannelID, -1)AS DimChannelID
         ,Dim_Date.Date_Pkey AS DimSaleDateID
-        ,Dim_Location.DimLocationID AS DimLocationID
+        ,NVL(Dim_Location.DimLocationID, -1) AS DimLocationID
         ,Stage_SalesHeader.SalesHeaderID AS SourceSalesHeaderID
         ,Stage_SalesDetail.SalesDetailID AS SourceSalesDetailID
         ,Stage_SalesDetail.SalesAmount AS SaleAmount
@@ -68,8 +68,10 @@ INSERT INTO Fact_SalesActual
     Dim_Store.SourceStoreID = Stage_SalesHeader.StoreID
     INNER JOIN Dim_Channel ON
     Dim_Channel.SourceChannelID = Stage_SalesHeader.ChannelID
-    INNER JOIN Dim_Date ON
-    Dim_Date.SQL_Timestamp = CAST(Stage_SalesHeader.Date AS timestamp)
+    LEFT JOIN Dim_Date ON
+    Dim_Date.Date = TO_DATE(Stage_SalesHeader.Date, 'MM/DD/YY')
     INNER JOIN Dim_Location ON
     Dim_Location.DimLocationID = Dim_Store.DimLocationID
---returns 66900 w/o date
+
+SELECT * FROM Fact_SalesActual;
+--66900 results

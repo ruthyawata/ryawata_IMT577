@@ -45,10 +45,9 @@ INSERT INTO Fact_SRCSalesTarget
         WHEN Stage_TargetDataChannel.TargetName = 'Store Number 21' then 21
         WHEN Stage_TargetDataChannel.TargetName = 'Store Number 34' then 34
         WHEN Stage_TargetDataChannel.TargetName = 'Store Number 39' then 39
+        ELSE TRUE
     END
     LEFT JOIN Dim_Date ON
     Dim_Date.Year = Stage_TargetDataChannel.Year
-
+--15330 results
 SELECT * FROM Fact_SRCSalesTarget;
-
---seperate out the query to see what area is problamatic

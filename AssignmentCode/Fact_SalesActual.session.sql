@@ -69,8 +69,7 @@ INSERT INTO Fact_SalesActual
     INNER JOIN Dim_Channel ON
     Dim_Channel.SourceChannelID = Stage_SalesHeader.ChannelID
     INNER JOIN Dim_Date ON
-    Dim_Date.Date = Stage_SalesHeader.Date
+    Dim_Date.SQL_Timestamp = CAST(Stage_SalesHeader.Date AS timestamp)
     INNER JOIN Dim_Location ON
     Dim_Location.DimLocationID = Dim_Store.DimLocationID
---returns 0 rows
-SELECT * FROM Fact_SalesActual;
+--returns 66900 w/o date

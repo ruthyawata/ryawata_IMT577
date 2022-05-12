@@ -31,13 +31,13 @@ INSERT INTO Fact_SRCSalesTarget
 	FROM Stage_TargetDataChannel
     INNER JOIN Dim_Date ON
     Dim_Date.Year = Stage_TargetDataChannel.Year
-    INNER JOIN Dim_Reseller ON
-    Dim_Reseller.ResellerName = Stage_TargetDataChannel.TargetName
-    LEFT JOIN Dim_Channel ON
+    INNER JOIN Dim_Channel ON
     Dim_Channel.ChannelName = 
     CASE 
-        WHEN Stage_TargetDataChannel.ChannelName = 'Online' THEN 'On-line' ELSE FALSE
+        WHEN Stage_TargetDataChannel.ChannelName = 'Online' THEN 'On-line' ELSE Stage_TargetDataChannel.ChannelName
     END
+    LEFT JOIN Dim_Reseller ON
+    Dim_Reseller.ResellerName = Stage_TargetDataChannel.TargetName
     LEFT JOIN Dim_Store ON
     Dim_Store.StoreNumber = 
     CASE
@@ -47,10 +47,7 @@ INSERT INTO Fact_SRCSalesTarget
         WHEN Stage_TargetDataChannel.TargetName = 'Store Number 21' then 21
         WHEN Stage_TargetDataChannel.TargetName = 'Store Number 34' then 34
         WHEN Stage_TargetDataChannel.TargetName = 'Store Number 39' then 39
-        ELSE TRUE
     END
-    
 
 SELECT * FROM Fact_SRCSalesTarget;
---15330 results
---8,030 should be!
+--8030 results

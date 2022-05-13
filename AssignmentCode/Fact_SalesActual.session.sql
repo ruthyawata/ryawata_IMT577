@@ -55,23 +55,23 @@ INSERT INTO Fact_SalesActual
         ,Dim_Product.ProductRetailPrice AS SaleUnitPrice
         ,Dim_Product.ProductCost AS SaleExtendedCost
         ,Dim_Product.ProductRetailProfit AS SaleTotalProfit
-	FROM Dim_Product
+	FROM Stage_SalesHeader
+    INNER JOIN Dim_Date ON
+    Dim_Date.Date = TO_DATE(Stage_SalesHeader.Date, 'MM/DD/YY')
     INNER JOIN Stage_SalesDetail ON
-    Stage_SalesDetail.ProductID = Dim_Product.SourceProductID
-    INNER JOIN Stage_SalesHeader ON
-    Stage_SalesHeader.SalesHeaderID = Stage_SalesDetail.SalesHeaderID
+    Stage_SalesDetail.SalesHeaderID = Stage_SalesHeader.SalesHeaderID 
+    LEFT JOIN Dim_Product ON
+    Dim_Product.SourceProductID = Stage_SalesDetail.ProductID
+    LEFT JOIN Dim_Store ON
+    Dim_Store.SourceStoreID = Stage_SalesHeader.StoreID
     LEFT JOIN Dim_Customer ON
     Dim_Customer.SourceCustomerID = Stage_SalesHeader.CustomerID
     LEFT JOIN Dim_Reseller ON
     Dim_Reseller.SourceResellerID = Stage_SalesHeader.ResellerID
-    LEFT JOIN Dim_Store ON
-    Dim_Store.SourceStoreID = Stage_SalesHeader.StoreID
-    INNER JOIN Dim_Channel ON
+    LEFT JOIN Dim_Channel ON
     Dim_Channel.SourceChannelID = Stage_SalesHeader.ChannelID
-    LEFT JOIN Dim_Date ON
-    Dim_Date.Date = TO_DATE(Stage_SalesHeader.Date, 'MM/DD/YY')
-    INNER JOIN Dim_Location ON
+    LEFT JOIN Dim_Location ON
     Dim_Location.DimLocationID = Dim_Store.DimLocationID
 
 SELECT * FROM Fact_SalesActual;
---66900 results
+--187320 results

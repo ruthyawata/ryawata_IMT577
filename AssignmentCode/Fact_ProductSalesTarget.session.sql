@@ -23,10 +23,10 @@ INSERT INTO Fact_ProductSalesTarget
         ,Dim_Date.Date_Pkey AS DimTargetDateID
         ,Stage_TargetDataProduct.SalesQuantityTarget AS ProductTargetSalesQuantity
 	FROM Stage_TargetDataProduct
-    INNER JOIN Dim_Product ON
-    Dim_Product.SourceProductID = Stage_TargetDataProduct.ProductID
-    LEFT JOIN Dim_Date ON
+    INNER JOIN Dim_Date ON
     Dim_Date.Year = Stage_TargetDataProduct.Year
+    LEFT JOIN Dim_Product ON
+    Dim_Product.SourceProductID = Stage_TargetDataProduct.ProductID
 
 SELECT * FROM Fact_ProductSalesTarget;
 --17520 results

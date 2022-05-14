@@ -22,7 +22,7 @@ SELECT * FROM Fact_SalesActual;
 --re-create it or drop and re-create via the web interface.
 --DROP TABLE Fact_ProductSalesTarget;
 
---Load rows from Dim_Product, Dim_Store, Dim_Reseller, Dim_Customer, Dim_Channel, Dim_Date, Dim_Location
+--Load rows from Dim_Product, Dim_Store, Dim_Reseller, Dim_Customer, Dim_Channel, Dim_Date, Dim_Location, Stage_SalesHeader, Stage_SalesDetail
 INSERT INTO Fact_SalesActual
 (
     DimProductID

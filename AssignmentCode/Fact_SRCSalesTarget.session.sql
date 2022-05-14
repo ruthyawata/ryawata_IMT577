@@ -34,19 +34,20 @@ INSERT INTO Fact_SRCSalesTarget
     INNER JOIN Dim_Channel ON
     Dim_Channel.ChannelName = 
     CASE 
-        WHEN Stage_TargetDataChannel.ChannelName = 'Online' THEN 'On-line' ELSE Stage_TargetDataChannel.ChannelName
+        WHEN Stage_TargetDataChannel.ChannelName = 'Online' THEN 'On-line' 
+        ELSE Stage_TargetDataChannel.ChannelName
     END
     LEFT JOIN Dim_Reseller ON
     Dim_Reseller.ResellerName = Stage_TargetDataChannel.TargetName
     LEFT JOIN Dim_Store ON
     Dim_Store.StoreNumber = 
     CASE
-        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 5' then 5
-        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 8' then 8
-        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 10' then 10
-        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 21' then 21
-        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 34' then 34
-        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 39' then 39
+        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 5' THEN 5
+        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 8' THEN 8
+        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 10' THEN 10
+        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 21' THEN 21
+        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 34' THEN 34
+        WHEN Stage_TargetDataChannel.TargetName = 'Store Number 39' THEN 39
     END
 
 SELECT * FROM Fact_SRCSalesTarget;

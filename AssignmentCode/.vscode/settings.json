@@ -1,0 +1,40 @@
+{
+    "sqltools.connections": [
+        {
+            "authenticator": "SNOWFLAKE",
+            "ocspOptions": {
+                "ocspFailOpen": true
+            },
+            "snowflakeOptions": {
+                "clientSessionKeepAlive": true,
+                "clientSessionKeepAliveHeartbeatFrequency": 3600
+            },
+            "previewLimit": 50,
+            "driver": "Snowflake",
+            "name": "DW_ITsession",
+            "account": "AE58074.east-us-2.azure",
+            "username": "ruthyawata",
+            "password": "Yellby*08",
+            "database": "IMT577_ITSESSION_DW_RUTH_YAWATA",
+            "warehouse": "IMT577_ITSESSION_DW"
+        },
+        {
+            "authenticator": "SNOWFLAKE",
+            "ocspOptions": {
+                "ocspFailOpen": true
+            },
+            "snowflakeOptions": {
+                "clientSessionKeepAlive": true,
+                "clientSessionKeepAliveHeartbeatFrequency": 3600
+            },
+            "previewLimit": 50,
+            "driver": "Snowflake",
+            "name": "IMT577_DW",
+            "account": "AE58074.east-us-2.azure",
+            "username": "ruthyawata",
+            "password": "Yellby*08",
+            "database": "IMT577_DW_RUTH_YAWATA",
+            "warehouse": "IMT577_DW_RUTH_YAWATA"
+        }
+    ]
+}

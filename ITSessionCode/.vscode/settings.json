@@ -1,0 +1,22 @@
+{
+    "sqltools.connections": [
+        {
+            "authenticator": "SNOWFLAKE",
+            "ocspOptions": {
+                "ocspFailOpen": true
+            },
+            "snowflakeOptions": {
+                "clientSessionKeepAlive": true,
+                "clientSessionKeepAliveHeartbeatFrequency": 3600
+            },
+            "previewLimit": 50,
+            "driver": "Snowflake",
+            "warehouse": "IMT577_ITSESSION_DW",
+            "database": "IMT577_ITSESSION_DW_RUTH_YAWATA",
+            "username": "ruthyawata",
+            "password": "Yellby*08",
+            "account": "AE58074.east-us-2.azure",
+            "name": "ITSession_DW"
+        }
+    ]
+}

@@ -17,6 +17,7 @@ What are all of the planets in the Star Wars universe?
 What are all of the species in the Star Wars universe?
 What planet are the different characters from?
 **/
+
 CREATE VIEW all_starwars
     AS
 SELECT DISTINCT  

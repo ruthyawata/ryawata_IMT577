@@ -10,6 +10,7 @@ Steps:
     1. Create simple view
     2. Create aggregate view
 *****************************************/
+
 --create a simple view
 /**
 Who are all of the characters in the Star Wars universe?

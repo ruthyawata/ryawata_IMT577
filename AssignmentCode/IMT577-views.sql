@@ -61,7 +61,7 @@ CREATE VIEW MensCasual_Sales_Target
         Fact_ProductSalesTarget.DimProductID = Dim_Product.DimProductID
         INNER JOIN Dim_Date ON
         Dim_Date.Date_Pkey = Fact_ProductSalesTarget.DimTargetDateID
-        WHERE Dim_Product.ProductType = 'Men\'s\ Casual'
+        WHERE Dim_Product.ProductType = '%Men%Casual%'
 
 -- View 4: 2013 & 2014 product sales targets for Womens's Casual 
 CREATE VIEW WomensCasual_Sales_Target
@@ -74,7 +74,7 @@ CREATE VIEW WomensCasual_Sales_Target
         Fact_ProductSalesTarget.DimProductID = Dim_Product.DimProductID
         INNER JOIN Dim_Date ON
         Dim_Date.Date_Pkey = Fact_ProductSalesTarget.DimTargetDateID
-        WHERE Dim_Product.ProductType = 'Women\'s\ Casual'
+        WHERE Dim_Product.ProductType = '%Women%Casual%'
 
 -- View 5: Store 5 2013 & 2014 product sales amount for Mens's Casual
 CREATE VIEW Store5_MensCasual_Sales_Actual
@@ -90,7 +90,7 @@ CREATE VIEW Store5_MensCasual_Sales_Actual
         Fact_SalesActual.DimProductID = Dim_Product.DimProductID
         INNER JOIN Dim_Date ON
         Dim_Date.Date_Pkey = Fact_SalesActual.DimSaleDateID
-        WHERE Dim_Product.ProductType = 'Men\'s\ Casual'
+        WHERE Dim_Product.ProductType = '%Men%Casual%'
         AND Dim_Store.StoreNumber = 5
         GROUP BY Dim_Store.StoreNumber, Dim_Product.ProductType, Dim_Date.Year
 
@@ -108,7 +108,7 @@ CREATE VIEW Store5_WomensCasual_Sales_Actual
         Fact_SalesActual.DimProductID = Dim_Product.DimProductID
         INNER JOIN Dim_Date ON
         Dim_Date.Date_Pkey = Fact_SalesActual.DimSaleDateID
-        WHERE Dim_Product.ProductType = 'Women\'s\ Casual'
+        WHERE Dim_Product.ProductType = '%Women%Casual%'
         AND Dim_Store.StoreNumber = 5
         GROUP BY Dim_Store.StoreNumber, Dim_Product.ProductType, Dim_Date.Year
 
@@ -126,7 +126,7 @@ CREATE VIEW Store8_MensCasual_Sales_Actual
         Fact_SalesActual.DimProductID = Dim_Product.DimProductID
         INNER JOIN Dim_Date ON
         Dim_Date.Date_Pkey = Fact_SalesActual.DimSaleDateID
-        WHERE Dim_Product.ProductType = 'Men\'s\ Casual'
+        WHERE Dim_Product.ProductType LIKE '%Men%Casual%'
         AND Dim_Store.StoreNumber = 8
         GROUP BY Dim_Store.StoreNumber, Dim_Product.ProductType, Dim_Date.Year
 
@@ -143,7 +143,41 @@ CREATE VIEW Store8_WomensCasual_Sales_Actual
         INNER JOIN Dim_Product ON
         Fact_SalesActual.DimProductID = Dim_Product.DimProductID
         INNER JOIN Dim_Date ON
-        Dim_Date.Date_Pkey = Fact_SalesActual.DimSaleDateID
-        WHERE Dim_Product.ProductType = 'Women\'s\ Casual'
+        Fact_SalesActual.DimSaleDateID = Dim_Date.Date_Pkey
+        WHERE Dim_Product.ProductType = '%Women%Casual%'
         AND Dim_Store.StoreNumber = 8
         GROUP BY Dim_Store.StoreNumber, Dim_Product.ProductType, Dim_Date.Year
+
+-- View 9 Product sales by day of the week
+CREATE VIEW Product_Sales_DayofWeek
+    SELECT DISTINCT
+        Dim_Store.StoreNumber
+        ,Dim_Date.Day_Abbrev
+        ,SUM(Fact_SalesActual.SaleQuantity) AS ProductSales
+        FROM Fact_SalesActual
+        INNER JOIN Dim_Store ON
+        Fact_SalesActual.DimStoreID = DIm_Store.DimStoreID
+        INNER JOIN Dim_Date ON
+        Fact_SalesActual.DimSaleDateID = Dim_Date.Date_Pkey
+        WHERE Dim_Store.StoreNumber = 5 OR Dim_Store.StoreNumber = 8
+        GROUP BY Dim_Store.StoreNumber, Dim_Date.Day_Abbrev
+        ORDER BY ProductSales DESC
+
+--4. Compare the performance of all stores located in states that have more than one store to all stores that are --the only store in the state. What can we learn about having more than one store in a state?
+
+-- View 10 Actual sales of stores by state
+CREATE VIEW StoresbyState_Sales
+    SELECT DISTINCT
+    Dim_Store.StoreNumber
+    ,Dim_Location.Region AS State
+    ,Dim_Date.Year
+    ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
+    FROM Dim_Store
+    INNER JOIN Dim_Location ON
+    Dim_Store.DimLocationID = Dim_Location.DimLocationID
+    INNER JOIN Fact_SalesActual ON
+    Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
+    INNER JOIN Dim_Date ON
+    Dim_Date.Date_Pkey = Fact_SalesActual.DimSaleDateID
+    GROUP BY Dim_Store.StoreNumber, Dim_Date.Year, State
+    ORDER BY Dim_Store.StoreNumber, Dim_Date.Year, State

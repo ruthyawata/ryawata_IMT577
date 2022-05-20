@@ -50,7 +50,82 @@ CREATE VIEW Store_Sales_Actual
         GROUP BY Dim_Store.StoreNumber, Dim_Date.Year
         ORDER BY Dim_Store.StoreNumber, Dim_Date.Year
 
--- View 3: Product sales amount for men's casual for stores 5 & 8 for years 2013 & 2014
--- View 4: Product sales amount for women's casual for stores 5 & 8 for years 2013 & 2014
+-- View 3: Product sales amount for Mens's Casual for store 5 for years 2013 & 2014
+CREATE VIEW Store5_MensCasual_Sales_Actual
+    SELECT DISTINCT
+        Dim_Store.StoreNumber
+        ,Dim_Product.ProductType
+        ,Dim_Date.Year
+        ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
+        FROM Fact_SalesActual
+        INNER JOIN Dim_Store ON
+        Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
+        INNER JOIN Dim_Product ON
+        Fact_SalesActual.DimProductID = Dim_Product.DimProductID
+        INNER JOIN Dim_Date ON
+        Dim_Date.Date_Pkey = Fact_SalesActual.DimSaleDateID
+        WHERE Dim_Product.ProductType = 'Men\'s\ Casual'
+        AND Dim_Store.StoreNumber = 5
+        GROUP BY Dim_Store.StoreNumber, Dim_Product.ProductType, Dim_Date.Year
+        ORDER BY Dim_Store.StoreNumber, Dim_Product.ProductType, Dim_Date.Year
 
-CREATE VIEW MensCasual_Sales_Actual
+-- View 4: Product sales targets for Mens's Casual for store 5 for years 2013 & 2014
+CREATE VIEW Store5_MensCasual_Sales_Target
+    SELECT DISTINCT
+        Dim_Store.StoreNumber
+        ,Dim_Product.ProductType
+        ,Dim_Date.Year
+        ,Fact_ProductSalesTarget.ProductTargetSalesQuantity AS TargetQuantity
+        FROM Dim_Store
+        INNER JOIN Fact_SalesActual ON
+        Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
+        INNER JOIN Dim_Product ON
+        Fact_SalesActual.DimProductID = Dim_Product.DimProductID 
+        INNER JOIN Fact_ProductSalesTarget ON
+        Fact_ProductSalesTarget.DimProductID = Dim_Product.DimProductID
+        INNER JOIN Dim_Date ON
+        Dim_Date.Date_Pkey = Fact_ProductSalesTarget.DimTargetDateID
+        WHERE Dim_Product.ProductType = 'Men\'s\ Casual'
+        AND Dim_Store.StoreNumber = 5
+        GROUP BY Dim_Store.StoreNumber, Dim_Product.ProductType, Dim_Date.Year, TargetQuantity
+        ORDER BY Dim_Store.StoreNumber, Dim_Product.ProductType, Dim_Date.Year, TargetQuantity
+
+-- View 5: Product sales amount for Womens's Casual for store 5 for years 2013 & 2014
+CREATE VIEW Store5_WomensCasual_Sales_Actual
+    SELECT DISTINCT
+        Dim_Store.StoreNumber
+        ,Dim_Product.ProductType
+        ,Dim_Date.Year
+        ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
+        FROM Fact_SalesActual
+        INNER JOIN Dim_Store ON
+        Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
+        INNER JOIN Dim_Product ON
+        Fact_SalesActual.DimProductID = Dim_Product.DimProductID
+        INNER JOIN Dim_Date ON
+        Dim_Date.Date_Pkey = Fact_SalesActual.DimSaleDateID
+        WHERE Dim_Product.ProductType = 'Women\'s\ Casual'
+        AND Dim_Store.StoreNumber = 5
+        GROUP BY Dim_Store.StoreNumber, Dim_Product.ProductType, Dim_Date.Year
+        ORDER BY Dim_Store.StoreNumber, Dim_Product.ProductType, Dim_Date.Year
+
+-- View 6: Product sales targets for Womens's Casual for store 5 for years 2013 & 2014
+CREATE VIEW Store5_WomensCasual_Sales_Target
+    SELECT DISTINCT
+        Dim_Store.StoreNumber
+        ,Dim_Product.ProductType
+        ,Dim_Date.Year
+        ,Fact_ProductSalesTarget.ProductTargetSalesQuantity AS TargetQuantity
+        FROM Dim_Store
+        INNER JOIN Fact_SalesActual ON
+        Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
+        INNER JOIN Dim_Product ON
+        Fact_SalesActual.DimProductID = Dim_Product.DimProductID 
+        INNER JOIN Fact_ProductSalesTarget ON
+        Fact_ProductSalesTarget.DimProductID = Dim_Product.DimProductID
+        INNER JOIN Dim_Date ON
+        Dim_Date.Date_Pkey = Fact_ProductSalesTarget.DimTargetDateID
+        WHERE Dim_Product.ProductType = 'Women\'s\ Casual'
+        AND Dim_Store.StoreNumber = 5
+        GROUP BY Dim_Store.StoreNumber, Dim_Product.ProductType, Dim_Date.Year, TargetQuantity
+        ORDER BY Dim_Store.StoreNumber, Dim_Product.ProductType, Dim_Date.Year, TargetQuantity

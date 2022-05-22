@@ -22,9 +22,9 @@ What planet are the different characters from?
 CREATE VIEW all_starwars
     AS
 SELECT DISTINCT  
-		   Dim_Characters.Name AS Characters
-          ,Dim_Planets.PlanetName AS Planets
-          ,Dim_Species.Species AS Species
+    Dim_Characters.Name AS Characters
+    ,Dim_Planets.PlanetName AS Planets
+    ,Dim_Species.Species AS Species
 	FROM Dim_Planets
 	LEFT OUTER JOIN Dim_Characters ON
 	Dim_Characters.Homeworld = Dim_Planets.PlanetName 

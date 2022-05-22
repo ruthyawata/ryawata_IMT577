@@ -1,10 +1,5 @@
 /***
-View 1 - store number, year, and target
-View 2 - store number, year, and actual sale amount
-View 3 - store number, product type men's casual, women's casual
-view 3 - sales by day of week for products
-view 4 - state-wide sales performance
-
+Business questions for pod 1:
 1. Give an overall assessment of stores number 5 and 8’s sales.
 
 How are they performing compared to target? Will they meet their 2014 target?
@@ -21,11 +16,11 @@ Hint: group by aggregate for daily and then it's the average of those days of th
 
 -- View 1: 2013 & 2014 sales targets for stores 5 & 8
 CREATE VIEW Store_Sales_Target
-AS
+    AS
     SELECT DISTINCT
-    Dim_Store.StoreNumber
-    ,Dim_Date.Year
-    ,Fact_SRCSalesTarget.SalesTargetAmount AS Target
+        Dim_Store.StoreNumber
+        ,Dim_Date.Year
+        ,Fact_SRCSalesTarget.SalesTargetAmount AS Target
     FROM Dim_Store
     INNER JOIN Fact_SRCSalesTarget ON
     Fact_SRCSalesTarget.DimStoreID = Dim_Store.DimStoreID
@@ -38,9 +33,9 @@ AS
 -- View 2: 2013 & 2014 sale targets for stores 5 & 8
 CREATE VIEW Store_Sales_Actual
     SELECT DISTINCT
-        Dim_Store.StoreNumber
-        ,Dim_Date.Year
-        ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
+            Dim_Store.StoreNumber
+            ,Dim_Date.Year
+            ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
         FROM Fact_SalesActual 
         INNER JOIN Dim_Store ON
         Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
@@ -53,9 +48,9 @@ CREATE VIEW Store_Sales_Actual
 -- View 3: 2013 & 2014 product sales targets for Mens's Casual for 
 CREATE VIEW MensCasual_Sales_Target
     SELECT DISTINCT
-        Dim_Product.ProductType
-        ,Dim_Date.Year
-        ,Fact_ProductSalesTarget.ProductTargetSalesQuantity AS TargetQuantity
+            Dim_Product.ProductType
+            ,Dim_Date.Year
+            ,Fact_ProductSalesTarget.ProductTargetSalesQuantity AS TargetQuantity
         FROM Dim_Product
         INNER JOIN Fact_ProductSalesTarget ON
         Fact_ProductSalesTarget.DimProductID = Dim_Product.DimProductID
@@ -66,9 +61,9 @@ CREATE VIEW MensCasual_Sales_Target
 -- View 4: 2013 & 2014 product sales targets for Womens's Casual 
 CREATE VIEW WomensCasual_Sales_Target
     SELECT DISTINCT
-        Dim_Product.ProductType
-        ,Dim_Date.Year
-        ,Fact_ProductSalesTarget.ProductTargetSalesQuantity AS TargetQuantity
+            Dim_Product.ProductType
+            ,Dim_Date.Year
+            ,Fact_ProductSalesTarget.ProductTargetSalesQuantity AS TargetQuantity
         FROM Dim_Product
         INNER JOIN Fact_ProductSalesTarget ON
         Fact_ProductSalesTarget.DimProductID = Dim_Product.DimProductID
@@ -79,10 +74,10 @@ CREATE VIEW WomensCasual_Sales_Target
 -- View 5: Store 5 2013 & 2014 product sales amount for Mens's Casual
 CREATE VIEW Store5_MensCasual_Sales_Actual
     SELECT DISTINCT
-        Dim_Store.StoreNumber
-        ,Dim_Product.ProductType
-        ,Dim_Date.Year
-        ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
+            Dim_Store.StoreNumber
+            ,Dim_Product.ProductType
+            ,Dim_Date.Year
+            ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
         FROM Fact_SalesActual
         INNER JOIN Dim_Store ON
         Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
@@ -97,10 +92,10 @@ CREATE VIEW Store5_MensCasual_Sales_Actual
 -- View 6: Store 5 2013 & 2014 product sales amount for Womens's Casual
 CREATE VIEW Store5_WomensCasual_Sales_Actual
     SELECT DISTINCT
-        Dim_Store.StoreNumber
-        ,Dim_Product.ProductType
-        ,Dim_Date.Year
-        ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
+            Dim_Store.StoreNumber
+            ,Dim_Product.ProductType
+            ,Dim_Date.Year
+            ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
         FROM Fact_SalesActual
         INNER JOIN Dim_Store ON
         Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
@@ -115,10 +110,10 @@ CREATE VIEW Store5_WomensCasual_Sales_Actual
 -- View 7: Store 8 2013 & 2014 product sales amount for Mens's Casual
 CREATE VIEW Store8_MensCasual_Sales_Actual
     SELECT DISTINCT
-        Dim_Store.StoreNumber
-        ,Dim_Product.ProductType
-        ,Dim_Date.Year
-        ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
+            Dim_Store.StoreNumber
+            ,Dim_Product.ProductType
+            ,Dim_Date.Year
+            ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
         FROM Fact_SalesActual
         INNER JOIN Dim_Store ON
         Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
@@ -133,10 +128,10 @@ CREATE VIEW Store8_MensCasual_Sales_Actual
 -- View 8: Store 8 2013 & 2014 product sales amount for Womens's Casual
 CREATE VIEW Store8_WomensCasual_Sales_Actual
     SELECT DISTINCT
-        Dim_Store.StoreNumber
-        ,Dim_Product.ProductType
-        ,Dim_Date.Year
-        ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
+            Dim_Store.StoreNumber
+            ,Dim_Product.ProductType
+            ,Dim_Date.Year
+            ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
         FROM Fact_SalesActual
         INNER JOIN Dim_Store ON
         Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
@@ -151,9 +146,9 @@ CREATE VIEW Store8_WomensCasual_Sales_Actual
 -- View 9 Product sales by day of the week
 CREATE VIEW Product_Sales_DayofWeek
     SELECT DISTINCT
-        Dim_Store.StoreNumber
-        ,Dim_Date.Day_Abbrev
-        ,SUM(Fact_SalesActual.SaleQuantity) AS ProductSales
+            Dim_Store.StoreNumber
+            ,Dim_Date.Day_Abbrev
+            ,SUM(Fact_SalesActual.SaleQuantity) AS ProductSales
         FROM Fact_SalesActual
         INNER JOIN Dim_Store ON
         Fact_SalesActual.DimStoreID = DIm_Store.DimStoreID
@@ -168,10 +163,10 @@ CREATE VIEW Product_Sales_DayofWeek
 -- View 10 Actual sales of stores by state
 CREATE VIEW StoresbyState_Sales
     SELECT DISTINCT
-    Dim_Store.StoreNumber
-    ,Dim_Location.Region AS State
-    ,Dim_Date.Year
-    ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
+        Dim_Store.StoreNumber
+        ,Dim_Location.Region AS State
+        ,Dim_Date.Year
+        ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
     FROM Dim_Store
     INNER JOIN Dim_Location ON
     Dim_Store.DimLocationID = Dim_Location.DimLocationID

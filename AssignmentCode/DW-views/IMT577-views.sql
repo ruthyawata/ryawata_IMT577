@@ -1,20 +1,3 @@
-/***
-Business questions for pod 1:
-1. Give an overall assessment of stores number 5 and 8’s sales.
-
-How are they performing compared to target? Will they meet their 2014 target?
-Should either store be closed? Why or why not?
-What should be done in the next year to maximize store profits?
-
-2. Recommend separate 2013 and 2014 bonus amounts for each store if the total bonus pool for 2013 is $500,000 and the total bonus pool for 2014 is $400,000. Base your recommendation on how well the stores are selling Product Types of Men’s Casual and Women’s Casual.
-
-3. Assess product sales by day of the week at stores 5 and 8. What can we learn about sales trends?
-Hint: group by aggregate for daily and then it's the average of those days of the week
-
-4. Compare the performance of all stores located in states that have more than one store to all stores that are the only store in the state. What can we learn about having more than one store in a state?
-***/
-
-
 -- View 1: 2013 & 2014 sales targets for stores 5 & 8
 CREATE VIEW Store_SalesTarget
     AS
@@ -175,10 +158,10 @@ CREATE VIEW ProductSales_DayofWeek
     SELECT DISTINCT
             Dim_Store.StoreNumber
             ,Dim_Date.Day_Abbrev
-            ,SUM(Fact_SalesActual.SaleQuantity) AS ProductSales
+            ,SUM(Fact_SalesActual.SaleAmount) AS ProductSales
         FROM Fact_SalesActual
         INNER JOIN Dim_Store ON
-        Fact_SalesActual.DimStoreID = DIm_Store.DimStoreID
+        Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
         INNER JOIN Dim_Date ON
         Fact_SalesActual.DimSaleDateID = Dim_Date.Date_Pkey
         WHERE Dim_Store.StoreNumber = 5 OR Dim_Store.StoreNumber = 8
@@ -186,7 +169,7 @@ CREATE VIEW ProductSales_DayofWeek
         ORDER BY ProductSales DESC
 
 -- View 11: Actual sales of stores by state
-CREATE VIEW StoresbyState_Sales
+CREATE VIEW StoresbyState_ActualSales
     AS
     SELECT DISTINCT
         Dim_Store.StoreNumber

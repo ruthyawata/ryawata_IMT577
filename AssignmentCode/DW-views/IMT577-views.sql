@@ -132,6 +132,7 @@ CREATE OR REPLACE SECURE VIEW StoresbyState_ActualSales
     SELECT DISTINCT
         Dim_Store.StoreNumber
         ,Dim_Location.Region AS State
+        ,Dim_Location.City
         ,Dim_Location.PostalCode AS ZipCode
         ,Dim_Date.Year
         ,SUM(Fact_SalesActual.SaleAmount) AS SalesActual
@@ -142,8 +143,8 @@ CREATE OR REPLACE SECURE VIEW StoresbyState_ActualSales
     Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
     INNER JOIN Dim_Date ON
     Dim_Date.Date_Pkey = Fact_SalesActual.DimSaleDateID
-    GROUP BY Dim_Store.StoreNumber, State, ZipCode, Dim_Date.Year
-    ORDER BY Dim_Store.StoreNumber, State, ZipCode, Dim_Date.Year
+    GROUP BY Dim_Store.StoreNumber, State, City, ZipCode, Dim_Date.Year
+    ORDER BY Dim_Store.StoreNumber, State, City, ZipCode, Dim_Date.Year
 
 -- View 10: Target sales of stores by state
 CREATE OR REPLACE SECURE VIEW StoresbyState_Target
@@ -163,3 +164,5 @@ CREATE OR REPLACE SECURE VIEW StoresbyState_Target
     Dim_Date.Date_Pkey = Fact_SRCSalesTarget.DimTargetDateID
     GROUP BY Dim_Store.StoreNumber, State, ZipCode, Dim_Date.Year, Target
     ORDER BY Dim_Store.StoreNumber, State, ZipCode, Dim_Date.Year, Target
+
+    use schema public

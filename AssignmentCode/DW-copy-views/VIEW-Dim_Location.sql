@@ -1,4 +1,4 @@
-CREATE VIEW ViewDim_Location
+CREATE OR REPLACE SECURE VIEW ViewDim_Location
     AS
     SELECT
         DimLocationID

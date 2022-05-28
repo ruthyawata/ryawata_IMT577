@@ -1,4 +1,4 @@
-CREATE VIEW ViewDim_Product
+CREATE OR REPLACE SECURE VIEW ViewDim_Product
     AS
     SELECT
         DimProductID

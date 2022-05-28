@@ -1,4 +1,4 @@
-CREATE VIEW ViewFact_SalesActual
+CREATE OR REPLACE SECURE VIEW ViewFact_SalesActual
     AS
     SELECT
         DimProductID

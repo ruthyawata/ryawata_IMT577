@@ -1,4 +1,4 @@
-CREATE VIEW ViewDim_Store
+CREATE OR REPLACE SECURE VIEW ViewDim_Store
     AS
     SELECT
         DimStoreID

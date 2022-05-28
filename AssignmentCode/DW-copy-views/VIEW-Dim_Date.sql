@@ -1,4 +1,4 @@
-CREATE VIEW ViewDim_Date
+CREATE OR REPLACE SECURE VIEW ViewDim_Date
     AS
     SELECT
         DATE_PKEY,

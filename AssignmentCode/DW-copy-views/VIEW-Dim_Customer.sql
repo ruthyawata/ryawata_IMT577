@@ -1,4 +1,4 @@
-CREATE VIEW ViewDim_Customer
+CREATE OR REPLACE SECURE VIEW ViewDim_Customer
     AS
     SELECT
         DimCustomerID

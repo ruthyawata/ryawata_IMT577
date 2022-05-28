@@ -1,4 +1,4 @@
-CREATE VIEW ViewDim_Channel
+CREATE OR REPLACE SECURE VIEW ViewDim_Channel
     AS
     SELECT
         DimChannelID

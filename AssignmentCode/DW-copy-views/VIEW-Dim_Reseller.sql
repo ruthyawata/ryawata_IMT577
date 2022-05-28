@@ -1,4 +1,4 @@
-CREATE VIEW ViewDim_Reseller
+CREATE OR REPLACE SECURE VIEW ViewDim_Reseller
     AS
     SELECT
         DimResellerID

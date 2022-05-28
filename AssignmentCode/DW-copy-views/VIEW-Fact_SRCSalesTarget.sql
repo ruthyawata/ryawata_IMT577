@@ -1,4 +1,4 @@
-CREATE VIEW ViewFact_SRCSalesTarget
+CREATE OR REPLACE SECURE VIEW ViewFact_SRCSalesTarget
     AS
     SELECT
         DimStoreID

@@ -1,4 +1,4 @@
-CREATE VIEW ViewFact_ProductSalesTarget
+CREATE OR REPLACE SECURE VIEW ViewFact_ProductSalesTarget
     AS
     SELECT
         DimProductID

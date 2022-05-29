@@ -165,4 +165,21 @@ CREATE OR REPLACE SECURE VIEW StoresbyState_Target
     GROUP BY Dim_Store.StoreNumber, State, ZipCode, Dim_Date.Year, Target
     ORDER BY Dim_Store.StoreNumber, State, ZipCode, Dim_Date.Year, Target
 
-    use schema public
+-- View 11 Product sales by day
+ CREATE OR REPLACE SECURE VIEW ProductSalesType_DayofWeek
+    AS
+    SELECT DISTINCT
+            Dim_Store.StoreNumber
+            ,Dim_Product.ProductType
+            ,Dim_Date.Day_Abbrev
+            ,SUM(Fact_SalesActual.SaleAmount) AS ProductSales
+        FROM Fact_SalesActual
+        INNER JOIN Dim_Store ON
+        Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
+        INNER JOIN Dim_Date ON
+        Fact_SalesActual.DimSaleDateID = Dim_Date.Date_Pkey
+        INNER JOIN Dim_Product ON
+        Fact_SalesActual.DimProductID = Dim_Product.DimProductID
+        WHERE Dim_Store.StoreNumber = 5 OR Dim_Store.StoreNumber = 8
+        GROUP BY Dim_Store.StoreNumber, Dim_Product.ProductType, Dim_Date.Day_Abbrev
+        ORDER BY ProductSales DESC

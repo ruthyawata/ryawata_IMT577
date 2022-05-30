@@ -227,13 +227,13 @@ CREATE OR REPLACE SECURE VIEW Target_Daily
         Dim_Store.StoreNumber
         ,Dim_Date.Date_Pkey
         ,Dim_Date.Year
-        ,ROUND(Fact_SRCSalesTarget.SalesTargetAmount / 365, 2) AS DailyTarget
+        ,ROUND(Fact_SRCSalesTarget.SalesTargetAmount /365) AS DailyTarget
     FROM Fact_SRCSalesTarget
     INNER JOIN Dim_Date
-    ON Fact_SRCSalesTarget.DimTargetDateID = Dim_Date.Date_PKEY
-    INNER JOIN DIM_STORE
+    ON Fact_SRCSalesTarget.DimTargetDateID = Dim_Date.Date_Pkey
+    INNER JOIN Dim_Store
     ON Fact_SRCSalesTarget.DimStoreID = Dim_Store.DimStoreID
-    WHERE Dim_Store.StoreNumber = 5 OR Dim_Store.StoreNumber = 8
+    WHERE Dim_Store.StoreNumber IN (5,8)
     ORDER BY Dim_Store.StoreNumber, Dim_Date.Date_Pkey
 
 -- View 13 Bonus recommendation
